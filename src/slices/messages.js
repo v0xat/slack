@@ -17,11 +17,6 @@ export const messagesSlice = createSlice({
       const { messages } = payload;
       return { messages };
     },
-    [removeChannel]: (state, { payload }) => {
-      const { id } = payload;
-      const filteredMessages = state.messages.filter(({ channelId }) => channelId !== id);
-      return { messages: filteredMessages };
-    },
   },
 });
 
