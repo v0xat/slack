@@ -8,6 +8,7 @@ import '../assets/application.scss';
 import App from './components/App.jsx';
 import store from './app/store';
 import { addMessage } from './slices/messages.js';
+import { addChannel } from './slices/channels.js';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
@@ -16,19 +17,25 @@ if (process.env.NODE_ENV !== 'production') {
 const socket = io();
 
 socket.on('newMessage', (message) => store.dispatch(addMessage(message)));
-
-socket.on('connect', () => {
-  console.log(socket.id);
-});
+socket.on('newChannel', (channel) => store.dispatch(addChannel(channel)));
+socket.on('connect', () => console.log(socket.id));
 
 const SocketProvider = ({ children }) => {
   const sendMessage = (message) => {
-    socket.emit('newMessage', message, () => {});
+    socket.emit('newMessage', message, (response) => {
+      console.log(response.status);
+    });
+  };
+
+  const addNewChannel = (channel) => {
+    socket.emit('newChannel', channel, (response) => {
+      console.log(response.status);
+    });
   };
 
   return (
     <socketContext.Provider value={{
-      sendMessage,
+      sendMessage, addNewChannel,
     }}
     >
       {children}

@@ -9,6 +9,7 @@ import {
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
 import LoginPage from './LoginPage.jsx';
+import ModalsController from './modals/ModalsController.jsx';
 import Chat from './Chat.jsx';
 import Home from './Home.jsx';
 import PageNotFound from './PageNotFound.jsx';
@@ -56,6 +57,7 @@ const AuthButton = () => {
 
 const App = () => (
   <div className="d-flex flex-column h-100">
+    <ModalsController />
     <AuthProvider>
       <Router>
         <Navbar bg="light" expand="lg">
