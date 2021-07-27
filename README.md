@@ -1,4 +1,4 @@
-Heroku: 
+Проект доступен по ссылке: https://slack-frontend-hexlet.herokuapp.com/
 
 ## Requirements
 
