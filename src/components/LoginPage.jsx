@@ -12,11 +12,11 @@ const SignupSchema = yup.object().shape({
   username: yup.string()
     .min(3, 'Слишком короткий!')
     .max(12, 'Слишком длинный!')
-    .required('Обязательно'),
+    .required('Обязательное поле'),
   password: yup.string()
     .min(5, 'Слишком короткий!')
     .max(40, 'Слишком длинный!')
-    .required('Обязательно'),
+    .required('Обязательное поле'),
 });
 
 const LoginPage = () => {
@@ -35,6 +35,8 @@ const LoginPage = () => {
       password: '',
     },
     validationSchema: SignupSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: async (values) => {
       setAuthFailed(false);
 
@@ -62,7 +64,6 @@ const LoginPage = () => {
           <Form onSubmit={formik.handleSubmit} className="p-3">
             <h1 className="text-center mb-4">Войти</h1>
             <Form.Group>
-              {/* <Form.Label htmlFor="username">Логин</Form.Label> */}
               <Form.Control
                 onChange={formik.handleChange}
                 value={formik.values.username}
@@ -70,6 +71,7 @@ const LoginPage = () => {
                 name="username"
                 id="username"
                 autoComplete="username"
+                autoFocus
                 isInvalid={authFailed || formik.errors.username}
                 isValid={formik.touched.username && !formik.errors.username}
                 required
@@ -80,7 +82,6 @@ const LoginPage = () => {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
-              {/* <Form.Label htmlFor="password">Пароль</Form.Label> */}
               <Form.Control
                 type="password"
                 onChange={formik.handleChange}
