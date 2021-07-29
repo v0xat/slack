@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { closeModal } from '../../slices/modals.js';
-import ChannelForm from '../forms/ChannelForm.jsx';
+import AddChannelForm from '../forms/AddChannelForm.jsx';
 
 const AddChannelModal = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const AddChannelModal = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ChannelForm />
+        <AddChannelForm />
       </Modal.Body>
     </Modal>
   );
