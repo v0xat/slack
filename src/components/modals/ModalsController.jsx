@@ -11,10 +11,11 @@ const ModalManager = () => {
   const currentModal = useSelector((state) => state.modals);
 
   if (currentModal) {
-    const { modalType } = currentModal;
-    const ModalComponent = modalComponentMap[modalType];
+    const { name, props = null } = currentModal;
+    const ModalComponent = modalComponentMap[name];
 
-    const renderedModal = <ModalComponent />;
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    const renderedModal = <ModalComponent {...props} />;
     return <span>{renderedModal}</span>;
   }
 
