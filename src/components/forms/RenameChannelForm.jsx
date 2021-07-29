@@ -9,20 +9,25 @@ import {
 import { useSocket } from '../../hooks/index.jsx';
 import { closeModal } from '../../slices/modals.js';
 
-const ChannelForm = () => {
+const RenameChannelForm = ({ channelId }) => {
   const dispatch = useDispatch();
   const socket = useSocket();
+
   const { channels } = useSelector((state) => state.channels);
+  const currentChannel = channels.find(({ id }) => id === channelId);
   const channelsNames = channels.map(({ name }) => name);
+  console.log(currentChannel);
 
   const schema = yup.object().shape({
     channelName: yup.string()
       .trim()
       .required('Обязательное поле')
-      .min(2, 'Слишком короткое!')
-      .max(25, 'Слишком длинное!')
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов')
       .notOneOf(channelsNames, 'Название должно быть уникальным'),
   });
+
+  const handleFocus = (event) => event.target.select();
 
   const handleClose = () => dispatch(closeModal());
 
@@ -33,15 +38,16 @@ const ChannelForm = () => {
       validateOnBlur={false}
       onSubmit={(values) => {
         try {
-          const channel = { name: values.channelName };
-          socket.addNewChannel(channel);
+          const channel = { id: channelId, name: values.channelName };
+          console.log(channel);
+          socket.renameChannel(channel);
           handleClose();
         } catch (e) {
           console.log(e);
         }
       }}
       initialValues={{
-        channelName: '',
+        channelName: currentChannel.name,
       }}
     >
       {({
@@ -54,6 +60,7 @@ const ChannelForm = () => {
           <Form.Group>
             <Form.Control
               autoFocus
+              onFocus={handleFocus}
               type="text"
               name="channelName"
               className="mb-2"
@@ -75,4 +82,4 @@ const ChannelForm = () => {
   );
 };
 
-export default ChannelForm;
+export default RenameChannelForm;

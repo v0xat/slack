@@ -20,11 +20,19 @@ export const channelsSlice = createSlice({
       const newChannels = [...state.channels, payload];
       return { currentChannelId: id, channels: newChannels };
     },
+    renameChannel: (state, { payload }) => {
+      const { id, name } = payload;
+      return {
+        ...state,
+        // eslint-disable-next-line no-confusing-arrow
+        channels: state.channels.map((ch) => ch.id === id ? { ...ch, name } : ch),
+      };
+    },
   },
 });
 
 export const {
-  initState, setCurrentChannel, addChannel,
+  initState, setCurrentChannel, addChannel, renameChannel,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;
