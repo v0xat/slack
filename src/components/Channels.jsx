@@ -19,13 +19,15 @@ const Channels = () => {
     dispatch(openModal({ name, props: { id } }));
   };
 
+  const btnClass = 'w-100 rounded-0 text-left text-truncate';
+
   const renderChannels = () => channelsState.channels.map(({ id, name, removable }) => (
     <Nav.Item as="li" key={id} className="w-100">
       {removable ? (
         <Dropdown as={ButtonGroup} className="w-100">
           <Button
             variant={`${id === channelsState.currentChannelId ? 'secondary' : 'light'}`}
-            className="w-100 rounded-0 text-left"
+            className={btnClass}
             onClick={handleChangeChannel(id)}
           >
             <span># </span>
@@ -46,7 +48,7 @@ const Channels = () => {
       ) : (
         <Button
           variant={`${id === channelsState.currentChannelId ? 'secondary' : 'light'}`}
-          className="w-100 rounded-0 text-left"
+          className={btnClass}
           onClick={handleChangeChannel(id)}
         >
           <span># </span>

@@ -16,20 +16,20 @@ if (process.env.NODE_ENV !== 'production') {
 
 const socket = io();
 
-socket.on('sendMessage', (message) => store.dispatch(addMessage(message)));
-socket.on('addNewChannel', (channel) => store.dispatch(addChannel(channel)));
+socket.on('newMessage', (message) => store.dispatch(addMessage(message)));
+socket.on('newChannel', (channel) => store.dispatch(addChannel(channel)));
 socket.on('renameChannel', (channel) => store.dispatch(renameChannel(channel)));
 socket.on('connect', () => console.log(socket.id));
 
 const SocketProvider = ({ children }) => {
   const sendMessage = (message) => {
-    socket.emit('sendMessage', message, (response) => {
+    socket.emit('newMessage', message, (response) => {
       console.log(response.status);
     });
   };
 
   const addNewChannel = (channel) => {
-    socket.emit('addNewChannel', channel, (response) => {
+    socket.emit('newChannel', channel, (response) => {
       console.log(response.status);
     });
   };

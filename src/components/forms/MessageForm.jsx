@@ -42,7 +42,6 @@ const MessageForm = () => {
           handleSubmit,
           handleChange,
           values,
-          // errors,
         }) => (
           <Form onSubmit={handleSubmit}>
             <Row className="mb-3">
@@ -54,7 +53,6 @@ const MessageForm = () => {
                   name="message"
                   value={values.message}
                   onChange={handleChange}
-                  // isInvalid={errors.message}
                 />
               </Form.Group>
               <Button type="submit" className="mb-3">Отправить</Button>
