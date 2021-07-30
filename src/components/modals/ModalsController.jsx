@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 
 import AddChannelModal from './AddChannelModal.jsx';
 import RenameChannelModal from './RenameChannelModal.jsx';
+import RemoveChannelModal from './RemoveChannelModal.jsx';
 
 const modalComponentMap = {
   AddChannelModal,
   RenameChannelModal,
+  RemoveChannelModal,
 };
 
 const ModalManager = () => {

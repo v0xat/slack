@@ -44,7 +44,7 @@ const Channels = () => {
 
           <Dropdown.Menu>
             <Dropdown.Item href="" onClick={handleOpenModal('RenameChannelModal', id)}>Переименовать</Dropdown.Item>
-            <Dropdown.Item href="" onClick={handleOpenModal('DeleteChannelModal', id)}>Удалить</Dropdown.Item>
+            <Dropdown.Item href="" onClick={handleOpenModal('RemoveChannelModal', id)}>Удалить</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (

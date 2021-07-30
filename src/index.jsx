@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -8,7 +9,7 @@ import '../assets/application.scss';
 import App from './components/App.jsx';
 import store from './app/store';
 import { addMessage } from './slices/messages.js';
-import { addChannel, renameChannel } from './slices/channels.js';
+import { addChannel, renameChannel, removeChannel } from './slices/channels.js';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
@@ -19,7 +20,7 @@ const socket = io();
 socket.on('newMessage', (message) => store.dispatch(addMessage(message)));
 socket.on('newChannel', (channel) => store.dispatch(addChannel(channel)));
 socket.on('renameChannel', (channel) => store.dispatch(renameChannel(channel)));
-socket.on('connect', () => console.log(socket.id));
+socket.on('removeChannel', (channel) => store.dispatch(removeChannel(channel)));
 
 const SocketProvider = ({ children }) => {
   const sendMessage = (message) => {
@@ -34,16 +35,21 @@ const SocketProvider = ({ children }) => {
     });
   };
 
-  // eslint-disable-next-line no-shadow
   const renameChannel = (channel) => {
     socket.emit('renameChannel', channel, (response) => {
       console.log(response.status);
     });
   };
 
+  const removeChannel = (channel) => {
+    socket.emit('removeChannel', channel, (response) => {
+      console.log(response.status);
+    });
+  };
+
   return (
     <socketContext.Provider value={{
-      sendMessage, addNewChannel, renameChannel,
+      sendMessage, addNewChannel, renameChannel, removeChannel,
     }}
     >
       {children}
