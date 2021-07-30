@@ -29,9 +29,11 @@ export const channelsSlice = createSlice({
       };
     },
     removeChannel: (state, { payload }) => {
-      console.log(payload);
       const { id } = payload;
-      return { ...state, channels: state.channels.filter((ch) => ch.id !== id) };
+      return {
+        currentChannelId: state.currentChannelId === id ? 1 : state.currentChannelId,
+        channels: state.channels.filter((ch) => ch.id !== id),
+      };
     },
   },
 });
