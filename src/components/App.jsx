@@ -9,6 +9,7 @@ import {
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
 import Login from './Login.jsx';
+import SignUp from './SignUp.jsx';
 import ModalsController from './modals/ModalsController.jsx';
 import Chat from './Chat.jsx';
 import Home from './Home.jsx';
@@ -70,18 +71,13 @@ const App = () => (
         </Navbar>
 
         <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} />
           <PrivateRoute path="/chat">
             <Chat />
           </PrivateRoute>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
+          <Route path="*" component={PageNotFound} />
         </Switch>
 
       </Router>
