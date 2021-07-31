@@ -19,7 +19,7 @@ const SignupSchema = yup.object().shape({
     .required('Обязательное поле'),
 });
 
-const LoginPage = () => {
+const Login = () => {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -106,4 +106,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

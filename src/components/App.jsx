@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
-import LoginPage from './LoginPage.jsx';
+import Login from './Login.jsx';
 import ModalsController from './modals/ModalsController.jsx';
 import Chat from './Chat.jsx';
 import Home from './Home.jsx';
@@ -74,7 +74,7 @@ const App = () => (
             <Home />
           </Route>
           <Route path="/login">
-            <LoginPage />
+            <Login />
           </Route>
           <PrivateRoute path="/chat">
             <Chat />
