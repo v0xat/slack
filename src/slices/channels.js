@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const defaultChannelId = 1;
+
 export const channelsSlice = createSlice({
   name: 'channels',
   initialState: {
@@ -31,7 +33,7 @@ export const channelsSlice = createSlice({
     removeChannel: (state, { payload }) => {
       const { id } = payload;
       return {
-        currentChannelId: state.currentChannelId === id ? 1 : state.currentChannelId,
+        currentChannelId: state.currentChannelId === id ? defaultChannelId : state.currentChannelId,
         channels: state.channels.filter((ch) => ch.id !== id),
       };
     },
