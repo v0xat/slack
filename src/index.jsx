@@ -2,11 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
 
-import socketContext from './context/socket.jsx';
 import '../assets/application.scss';
 import App from './components/App.jsx';
+import { socket, SocketContext } from './context/socket.jsx';
 import store from './app/store';
 import { addMessage } from './slices/messages.js';
 import { addChannel, renameChannel, removeChannel } from './slices/channels.js';
@@ -14,8 +13,6 @@ import { addChannel, renameChannel, removeChannel } from './slices/channels.js';
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-
-const socket = io();
 
 socket.on('newMessage', (message) => store.dispatch(addMessage(message)));
 socket.on('newChannel', (channel) => store.dispatch(addChannel(channel)));
@@ -48,12 +45,12 @@ const SocketProvider = ({ children }) => {
   };
 
   return (
-    <socketContext.Provider value={{
+    <SocketContext.Provider value={{
       sendMessage, addNewChannel, renameChannel, removeChannel,
     }}
     >
       {children}
-    </socketContext.Provider>
+    </SocketContext.Provider>
   );
 };
 

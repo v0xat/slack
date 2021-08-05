@@ -5,10 +5,10 @@ import {
   Container, Row, Spinner,
 } from 'react-bootstrap';
 
-import { initState } from '../slices/channels.js';
-import routes from '../routes.js';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
+import routes from '../routes.js';
+import { initState } from '../slices/channels.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));

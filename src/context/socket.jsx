@@ -1,7 +1,7 @@
-// @ts-check
-
 import { createContext } from 'react';
+import { io } from 'socket.io-client';
 
-const socketContext = createContext({});
+const socket = io();
+const SocketContext = createContext();
 
-export default socketContext;
+export { socket, SocketContext };

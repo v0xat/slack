@@ -10,10 +10,10 @@ import { Button, Navbar, Nav } from 'react-bootstrap';
 
 import Login from './Login.jsx';
 import SignUp from './SignUp.jsx';
-import ModalsController from './modals/ModalsController.jsx';
 import Chat from './Chat.jsx';
 import Home from './Home.jsx';
 import PageNotFound from './PageNotFound.jsx';
+import ModalsController from './modals/ModalsController.jsx';
 import authContext from '../context/auth.jsx';
 import { useAuth } from '../hooks/index.jsx';
 

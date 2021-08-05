@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col } from 'react-bootstrap';
+
 import MessageForm from './forms/MessageForm.jsx';
 
 const Messages = () => {
