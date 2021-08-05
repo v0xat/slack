@@ -1,12 +1,13 @@
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import '../assets/application.scss';
+import store from './app/store';
 import App from './components/App.jsx';
 import { socket, SocketContext } from './context/socket.jsx';
-import store from './app/store';
+import UserContext from './context/user.jsx';
 import { addMessage } from './slices/messages.js';
 import { addChannel, renameChannel, removeChannel } from './slices/channels.js';
 
@@ -54,10 +55,35 @@ const SocketProvider = ({ children }) => {
   );
 };
 
+const UserProvider = ({ children }) => {
+  const curUserData = JSON.parse(localStorage.getItem('userData'));
+  const curUser = curUserData ? { username: curUserData.username } : null;
+  const [userData, setUser] = useState(curUser);
+
+  const logIn = ({ username, token }) => {
+    localStorage.setItem('userData', JSON.stringify({ username, token }));
+    setUser({ username });
+    console.log(userData);
+  };
+
+  const logOut = () => {
+    localStorage.removeItem('userData');
+    setUser(null);
+  };
+
+  return (
+    <UserContext.Provider value={{ userData, logIn, logOut }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
 ReactDOM.render(
   <Provider store={store}>
     <SocketProvider>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </SocketProvider>
   </Provider>,
   document.querySelector('#chat'),

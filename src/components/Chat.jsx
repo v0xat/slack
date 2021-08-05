@@ -11,10 +11,10 @@ import routes from '../routes.js';
 import { initState } from '../slices/channels.js';
 
 const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  console.log(userData);
+  if (userData.token) {
+    return { Authorization: `Bearer ${userData.token}` };
   }
 
   return {};

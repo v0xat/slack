@@ -6,7 +6,7 @@ import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
 
-import { useSocket } from '../../hooks/index.jsx';
+import { useSocket, useUser } from '../../hooks/index.jsx';
 
 const schema = yup.object().shape({
   message: yup.string()
@@ -16,6 +16,7 @@ const schema = yup.object().shape({
 });
 
 const MessageForm = () => {
+  const { userData } = useUser();
   const socket = useSocket();
   const { currentChannelId } = useSelector((state) => state.channels);
 
@@ -27,7 +28,9 @@ const MessageForm = () => {
         validateOnBlur={false}
         onSubmit={(values, actions) => {
           try {
-            const msg = { username: 'admin', text: values.message, channelId: currentChannelId };
+            const msg = {
+              username: userData.username, text: values.message, channelId: currentChannelId,
+            };
             socket.sendMessage(msg);
             actions.resetForm();
           } catch (e) {

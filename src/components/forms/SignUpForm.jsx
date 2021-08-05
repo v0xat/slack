@@ -1,35 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { useLocation, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import { useAuth } from '../../hooks/index.jsx';
+import { useUser } from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 
 const signUpSchema = yup.object().shape({
   username: yup.string()
-    .min(3, 'Слишком короткий!')
-    .max(20, 'Слишком длинный!')
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов')
     .required('Обязательное поле'),
   password: yup.string()
-    .min(6, 'Слишком короткий!')
+    .min(6, 'Не менее 6 символов')
     .required('Обязательное поле'),
   confirmPassword: yup.string()
     .required('Обязательное поле')
-    .oneOf([yup.ref('password')], 'Пароли не совпадают'),
+    .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
 });
 
-const SignUpForm = () => {
-  const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
-  const location = useLocation();
-  const history = useHistory();
+const SignUpForm = ({ history, location }) => {
+  const usernameRef = useRef();
   useEffect(() => {
-    inputRef.current.focus();
+    usernameRef.current.focus();
   }, []);
+
+  const user = useUser();
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -39,18 +37,22 @@ const SignUpForm = () => {
     },
     validationSchema: signUpSchema,
     validateOnChange: false,
-    validateOnBlur: false,
-    onSubmit: async (values) => {
+    validateOnBlur: true,
+    onSubmit: async (values, actions) => {
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        const { from } = location.state || { from: { pathname: '/' } };
+        const { username, password } = values;
+        const { data } = await axios.post(routes.signupPath(), { username, password });
+        user.logIn(data);
+
+        const { from } = location.state || { from: { pathname: '/chat' } };
         history.replace(from);
+
+        setSubmitFailed(false);
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
+        if (err.response.status === 409) {
+          setSubmitFailed(true);
+          actions.setFieldError('confirmPassword', 'Такой пользователь уже существует');
+          usernameRef.current.select();
           return;
         }
         throw err;
@@ -59,21 +61,23 @@ const SignUpForm = () => {
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit} className="w-50">
       <h1 className="text-center mb-4"><strong>Регистрация</strong></h1>
       <Form.Group>
         <Form.Control
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.username}
           placeholder="Имя пользователя"
           name="username"
           id="username"
           autoComplete="username"
           autoFocus
-          isInvalid={authFailed || formik.errors.username}
-          isValid={formik.touched.username && !formik.errors.username}
+          isInvalid={
+            submitFailed || (formik.touched.username && !!formik.errors.username)
+          }
           required
-          ref={inputRef}
+          ref={usernameRef}
         />
         <Form.Control.Feedback type="invalid">
           {formik.errors.username}
@@ -83,37 +87,41 @@ const SignUpForm = () => {
         <Form.Control
           type="password"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.password}
           placeholder="Пароль"
           name="password"
           id="password"
           autoComplete="new-password"
-          isInvalid={authFailed || formik.errors.password}
-          isValid={formik.touched.password && !formik.errors.password}
+          isInvalid={
+            submitFailed || (formik.touched.password && !!formik.errors.password)
+          }
           required
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.password ? formik.errors.password : 'Неверные имя пользователя или пароль'}
+          {formik.errors.password}
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group>
         <Form.Control
           type="password"
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           value={formik.values.confirmPassword}
           placeholder="Подтвердите пароль"
           name="confirmPassword"
           id="confirmPassword"
           autoComplete="new-password"
-          isInvalid={authFailed || formik.errors.confirmPassword}
-          isValid={formik.touched.confirmPassword && !formik.errors.confirmPassword}
+          isInvalid={
+            submitFailed || (formik.touched.confirmPassword && !!formik.errors.confirmPassword)
+          }
           required
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.password ? formik.errors.password : 'Неверные имя пользователя или пароль'}
+          {formik.errors.confirmPassword}
         </Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">Зарегистрироваться</Button>
+      <Button type="submit" className="w-100 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>Зарегистрироваться</Button>
     </Form>
   );
 };

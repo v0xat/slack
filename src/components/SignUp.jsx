@@ -2,26 +2,25 @@ import React from 'react';
 import {
   Container, Row, Col, Card, Image,
 } from 'react-bootstrap';
-// import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import logo from '../assets/signUpCat.gif';
 import SignUpForm from './forms/SignUpForm.jsx';
 
-// eslint-disable-next-line arrow-body-style
 const SignUp = () => {
-  // const location = useLocation();
-  // const history = useHistory();
+  const location = useLocation();
+  const history = useHistory();
 
   return (
     <Container fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">
         <Col xs={12} md={8}>
           <Card className="shadow-sm">
-            <Card.Body className="row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+              <div>
                 <Image src={logo} alt="Регистрация" thumbnail />
               </div>
-              <SignUpForm />
+              <SignUpForm history={history} location={location} />
             </Card.Body>
           </Card>
         </Col>

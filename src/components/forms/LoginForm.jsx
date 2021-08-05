@@ -1,31 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { useLocation, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
 
-import { useAuth } from '../../hooks/index.jsx';
+import { useUser } from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 
 const loginSchema = yup.object().shape({
   username: yup.string()
-    .min(3, 'Слишком короткий!')
-    .max(20, 'Слишком длинный!')
     .required('Обязательное поле'),
   password: yup.string()
     .required('Обязательное поле'),
 });
 
-const LoginForm = () => {
-  const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
-  const location = useLocation();
-  const history = useHistory();
+const LoginForm = ({ history, location }) => {
+  const usernameRef = useRef();
   useEffect(() => {
-    inputRef.current.focus();
+    usernameRef.current.focus();
   }, []);
+
+  const user = useUser();
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -36,18 +32,19 @@ const LoginForm = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      setAuthFailed(false);
-
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
+        console.log(user);
+        const { data } = await axios.post(routes.loginPath(), values);
+        user.logIn(data);
+
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
+
+        setSubmitFailed(false);
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
+        if (err.response.status === 401) {
+          setSubmitFailed(true);
+          usernameRef.current.select();
           return;
         }
         throw err;
@@ -67,15 +64,11 @@ const LoginForm = () => {
           name="username"
           id="username"
           autoComplete="username"
+          ref={usernameRef}
+          isInvalid={submitFailed}
           autoFocus
-          isInvalid={authFailed || formik.errors.username}
-          isValid={formik.touched.username && !formik.errors.username}
           required
-          ref={inputRef}
         />
-        <Form.Control.Feedback type="invalid">
-          {formik.errors.username}
-        </Form.Control.Feedback>
         {/* </Form.Floating> */}
       </Form.Group>
       <Form.Group>
@@ -87,15 +80,14 @@ const LoginForm = () => {
           name="password"
           id="password"
           autoComplete="current-password"
-          isInvalid={authFailed || formik.errors.password}
-          isValid={formik.touched.password && !formik.errors.password}
+          isInvalid={submitFailed}
           required
         />
         <Form.Control.Feedback type="invalid">
-          {formik.errors.password ? formik.errors.password : 'Неверные имя пользователя или пароль'}
+          Неверные имя пользователя или пароль
         </Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary">Войти</Button>
+      <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>Войти</Button>
     </Form>
   );
 };
