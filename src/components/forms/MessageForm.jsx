@@ -44,6 +44,7 @@ const MessageForm = () => {
         {({
           handleSubmit,
           handleChange,
+          isSubmitting,
           values,
         }) => (
           <Form onSubmit={handleSubmit}>
@@ -58,7 +59,7 @@ const MessageForm = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button type="submit" className="mb-3">Отправить</Button>
+              <Button type="submit" className="mb-3" disabled={isSubmitting}>Отправить</Button>
             </Row>
           </Form>
         )}
