@@ -104,7 +104,7 @@ const SignUpForm = ({ history, location }) => {
       </Form.Group>
       <Form.Group>
         <Form.Control
-          type="password"
+          type="confirmPassword"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.confirmPassword}
