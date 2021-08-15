@@ -1,36 +1,36 @@
 import * as yup from 'yup';
 
 export default {
-  loginSchema: () => yup.object().shape({
+  loginSchema: (translation) => yup.object().shape({
     username: yup.string()
-      .required('Обязательное поле'),
+      .required(translation('yup.fieldRequired')),
     password: yup.string()
-      .required('Обязательное поле'),
+      .required(translation('yup.fieldRequired')),
   }),
-  signUpSchema: () => yup.object().shape({
+  signUpSchema: (translation) => yup.object().shape({
     username: yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, translation('yup.usernameLength'))
+      .max(20, translation('yup.usernameLength'))
+      .required(translation('yup.fieldRequired')),
     password: yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
+      .min(6, translation('yup.passLength'))
+      .required(translation('yup.fieldRequired')),
     confirmPassword: yup.string()
-      .required('Обязательное поле')
-      .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+      .required(translation('yup.fieldRequired'))
+      .oneOf([yup.ref('password')], translation('yup.passEqual')),
   }),
-  messagesSchema: () => yup.object().shape({
+  messagesSchema: (translation) => yup.object().shape({
     message: yup.string()
       .trim()
       .required()
-      .max(256, 'Слишком длинное сообщение...'),
+      .max(256, translation('yup.messageLength')),
   }),
-  channelsSchema: (channels) => yup.object().shape({
+  channelsSchema: (translation, channels) => yup.object().shape({
     channelName: yup.string()
       .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channels.map(({ name }) => name), 'Название должно быть уникальным'),
+      .required(translation('yup.fieldRequired'))
+      .min(3, translation('yup.channelLength'))
+      .max(20, translation('yup.channelLength'))
+      .notOneOf(channels.map(({ name }) => name), translation('yup.uniqueChannelName')),
   }),
 };

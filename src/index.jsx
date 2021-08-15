@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import './i18n';
 
 import '../assets/application.scss';
 import store from './app/store';

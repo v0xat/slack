@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Container, Nav, Col, Dropdown, ButtonGroup, Button,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { setCurrentChannel } from '../slices/channels.js';
 import { openModal } from '../slices/modals.js';
 
 const Channels = () => {
+  const { t } = useTranslation();
   const channelsState = useSelector((state) => state.channels);
   const dispatch = useDispatch();
 
@@ -43,8 +45,8 @@ const Channels = () => {
           />
 
           <Dropdown.Menu>
-            <Dropdown.Item href="" onClick={handleOpenModal('RenameChannelModal', id)}>Переименовать</Dropdown.Item>
-            <Dropdown.Item href="" onClick={handleOpenModal('RemoveChannelModal', id)}>Удалить</Dropdown.Item>
+            <Dropdown.Item href="" onClick={handleOpenModal('RenameChannelModal', id)}>{t('buttons.rename')}</Dropdown.Item>
+            <Dropdown.Item href="" onClick={handleOpenModal('RemoveChannelModal', id)}>{t('buttons.remove')}</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
@@ -56,7 +58,7 @@ const Channels = () => {
   return (
     <Col xs={4} md={2} className="border-end pt-5 px-0 bg-light">
       <Container className="d-flex justify-content-between mb-2 ps-4 pe-2">
-        <span>Каналы</span>
+        <span>{t('global.channels')}</span>
         <button onClick={handleOpenModal('AddChannelModal')} variant="text-primary" type="button" className="p-0 text-primary btn btn-group-vertical">
           +
         </button>

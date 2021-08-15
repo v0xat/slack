@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import { useUser } from '../../hooks/index.jsx';
@@ -8,6 +9,8 @@ import validation from '../../validationSchemas';
 import routes from '../../routes.js';
 
 const LoginForm = ({ history, location }) => {
+  const { t } = useTranslation();
+
   const usernameRef = useRef();
   useEffect(() => {
     usernameRef.current.focus();
@@ -21,7 +24,7 @@ const LoginForm = ({ history, location }) => {
       username: '',
       password: '',
     },
-    validationSchema: validation.loginSchema,
+    validationSchema: validation.loginSchema(t),
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
@@ -47,13 +50,13 @@ const LoginForm = ({ history, location }) => {
 
   return (
     <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-      <h1 className="text-center mb-4"><strong>Войти</strong></h1>
+      <h1 className="text-center mb-4"><strong>{t('global.login')}</strong></h1>
       <Form.Group>
         {/* <Form.Floating className="mb-3"> */}
         <Form.Control
           onChange={formik.handleChange}
           value={formik.values.username}
-          placeholder="Ваш ник"
+          placeholder={t('global.username')}
           name="username"
           id="username"
           autoComplete="username"
@@ -69,7 +72,7 @@ const LoginForm = ({ history, location }) => {
           type="password"
           onChange={formik.handleChange}
           value={formik.values.password}
-          placeholder="Пароль"
+          placeholder={t('global.password')}
           name="password"
           id="password"
           autoComplete="current-password"
@@ -77,10 +80,10 @@ const LoginForm = ({ history, location }) => {
           required
         />
         <Form.Control.Feedback type="invalid">
-          Неверные имя пользователя или пароль
+          {t('errors.invalidCredentials')}
         </Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>Войти</Button>
+      <Button type="submit" className="w-100 mb-3 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>{t('global.login')}</Button>
     </Form>
   );
 };

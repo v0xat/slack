@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import { useUser } from '../../hooks/index.jsx';
@@ -8,6 +9,7 @@ import validation from '../../validationSchemas';
 import routes from '../../routes.js';
 
 const SignUpForm = ({ history, location }) => {
+  const { t } = useTranslation();
   const usernameRef = useRef();
   useEffect(() => {
     usernameRef.current.focus();
@@ -22,7 +24,7 @@ const SignUpForm = ({ history, location }) => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: validation.signUpSchema,
+    validationSchema: validation.signUpSchema(t),
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: async (values, actions) => {
@@ -38,7 +40,7 @@ const SignUpForm = ({ history, location }) => {
       } catch (err) {
         if (err.response.status === 409) {
           setSubmitFailed(true);
-          actions.setFieldError('confirmPassword', 'Такой пользователь уже существует');
+          actions.setFieldError('confirmPassword', t('errors.userExists'));
           usernameRef.current.select();
           return;
         }
@@ -49,13 +51,13 @@ const SignUpForm = ({ history, location }) => {
 
   return (
     <Form onSubmit={formik.handleSubmit} className="w-50">
-      <h1 className="text-center mb-4"><strong>Регистрация</strong></h1>
+      <h1 className="text-center mb-4"><strong>{t('global.signUp')}</strong></h1>
       <Form.Group>
         <Form.Control
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.username}
-          placeholder="Имя пользователя"
+          placeholder={t('global.username')}
           name="username"
           id="username"
           autoComplete="username"
@@ -76,7 +78,7 @@ const SignUpForm = ({ history, location }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.password}
-          placeholder="Пароль"
+          placeholder={t('global.password')}
           name="password"
           id="password"
           autoComplete="new-password"
@@ -95,7 +97,7 @@ const SignUpForm = ({ history, location }) => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.confirmPassword}
-          placeholder="Подтвердите пароль"
+          placeholder={t('global.confirmPassword')}
           name="confirmPassword"
           id="confirmPassword"
           autoComplete="new-password"
@@ -108,7 +110,7 @@ const SignUpForm = ({ history, location }) => {
           {formik.errors.confirmPassword}
         </Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" className="w-100 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>Зарегистрироваться</Button>
+      <Button type="submit" className="w-100 btn btn-outline-primary" variant="outline-primary" disabled={formik.isSubmitting}>{t('global.signUp')}</Button>
     </Form>
   );
 };

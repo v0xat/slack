@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
 const HomePage = () => (
@@ -8,9 +7,6 @@ const HomePage = () => (
       Ты находишься на главной странице приложения-чата, сделанного в рамках
       <a href="https://ru.hexlet.io/programs/frontend/projects/12"> проекта </a>
       на Hexlet.
-      <br />
-      Проект не завершён, поэтому для входа в чат используйте данные пользователя
-      <mark> admin </mark> (username: <mark>admin</mark>, password: <mark>admin</mark>)
       <br />
       Какие технологии я использовал:
     </p>

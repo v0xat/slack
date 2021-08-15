@@ -4,11 +4,13 @@ import { Formik } from 'formik';
 import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useSocket, useUser } from '../../hooks/index.jsx';
 import validation from '../../validationSchemas';
 
 const MessageForm = () => {
+  const { t } = useTranslation();
   const { userData } = useUser();
   const socket = useSocket();
   const { currentChannelId } = useSelector((state) => state.channels);
@@ -16,7 +18,7 @@ const MessageForm = () => {
   return (
     <div className="mt-auto px-5 py-3">
       <Formik
-        validationSchema={validation.messagesSchema}
+        validationSchema={validation.messagesSchema(t)}
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={(values, actions) => {
@@ -46,13 +48,13 @@ const MessageForm = () => {
                 <Form.Control
                   autoFocus
                   type="text"
-                  placeholder="Введите сообщение..."
+                  placeholder={t('enterMessage')}
                   name="message"
                   value={values.message}
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button type="submit" className="mb-3" disabled={isSubmitting}>Отправить</Button>
+              <Button type="submit" className="mb-3" disabled={isSubmitting}>{t('buttons.send')}</Button>
             </Row>
           </Form>
         )}
