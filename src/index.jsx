@@ -25,27 +25,19 @@ socket.on('removeChannel', (channel) => store.dispatch(removeChannel(channel)));
 
 const SocketProvider = ({ children }) => {
   const sendMessage = (message) => {
-    socket.emit('newMessage', message, (response) => {
-      console.log(response.status);
-    });
+    socket.emit('newMessage', message, () => {});
   };
 
   const addNewChannel = (channel) => {
-    socket.emit('newChannel', channel, (response) => {
-      console.log(response.status);
-    });
+    socket.emit('newChannel', channel, () => {});
   };
 
   const renameChannel = (channel) => {
-    socket.emit('renameChannel', channel, (response) => {
-      console.log(response.status);
-    });
+    socket.emit('renameChannel', channel, () => {});
   };
 
   const removeChannel = (channel) => {
-    socket.emit('removeChannel', channel, (response) => {
-      console.log(response.status);
-    });
+    socket.emit('removeChannel', channel, () => {});
   };
 
   return (
@@ -66,7 +58,6 @@ const UserProvider = ({ children }) => {
   const logIn = ({ username, token }) => {
     localStorage.setItem('userData', JSON.stringify({ username, token }));
     setUser({ username });
-    console.log(userData);
   };
 
   const logOut = () => {

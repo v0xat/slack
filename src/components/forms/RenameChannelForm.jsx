@@ -17,7 +17,6 @@ const RenameChannelForm = ({ channelId }) => {
 
   const { channels } = useSelector((state) => state.channels);
   const currentChannel = channels.find(({ id }) => id === channelId);
-  console.log(currentChannel);
 
   const handleFocus = (event) => event.target.select();
 
@@ -31,7 +30,6 @@ const RenameChannelForm = ({ channelId }) => {
       onSubmit={(values) => {
         try {
           const channel = { id: channelId, name: values.channelName };
-          console.log(channel);
           socket.renameChannel(channel);
           handleClose();
         } catch (e) {

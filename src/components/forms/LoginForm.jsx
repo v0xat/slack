@@ -29,7 +29,6 @@ const LoginForm = ({ history, location }) => {
     validateOnBlur: false,
     onSubmit: async (values) => {
       try {
-        console.log(user);
         const { data } = await axios.post(routes.loginPath(), values);
         user.logIn(data);
 

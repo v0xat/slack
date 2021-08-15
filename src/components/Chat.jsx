@@ -12,7 +12,7 @@ import { initState } from '../slices/channels.js';
 
 const getAuthHeader = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
-  console.log(userData);
+
   if (userData.token) {
     return { Authorization: `Bearer ${userData.token}` };
   }
