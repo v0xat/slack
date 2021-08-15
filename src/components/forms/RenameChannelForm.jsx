@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import {
   Form, Button,
 } from 'react-bootstrap';
 
 import { useSocket } from '../../hooks/index.jsx';
+import validation from '../../validationSchemas';
 import { closeModal } from '../../slices/modals.js';
 
 const RenameChannelForm = ({ channelId }) => {
@@ -15,17 +15,7 @@ const RenameChannelForm = ({ channelId }) => {
 
   const { channels } = useSelector((state) => state.channels);
   const currentChannel = channels.find(({ id }) => id === channelId);
-  const channelsNames = channels.map(({ name }) => name);
   console.log(currentChannel);
-
-  const schema = yup.object().shape({
-    channelName: yup.string()
-      .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelsNames, 'Название должно быть уникальным'),
-  });
 
   const handleFocus = (event) => event.target.select();
 
@@ -33,7 +23,7 @@ const RenameChannelForm = ({ channelId }) => {
 
   return (
     <Formik
-      validationSchema={schema}
+      validationSchema={validation.channelsSchema(channels)}
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={(values) => {

@@ -1,18 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import * as yup from 'yup';
 import axios from 'axios';
 
 import { useUser } from '../../hooks/index.jsx';
+import validation from '../../validationSchemas';
 import routes from '../../routes.js';
-
-const loginSchema = yup.object().shape({
-  username: yup.string()
-    .required('Обязательное поле'),
-  password: yup.string()
-    .required('Обязательное поле'),
-});
 
 const LoginForm = ({ history, location }) => {
   const usernameRef = useRef();
@@ -28,7 +21,7 @@ const LoginForm = ({ history, location }) => {
       username: '',
       password: '',
     },
-    validationSchema: loginSchema,
+    validationSchema: validation.loginSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {

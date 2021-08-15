@@ -1,34 +1,24 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import {
   Form, Button,
 } from 'react-bootstrap';
 
 import { useSocket } from '../../hooks/index.jsx';
+import validation from '../../validationSchemas';
 import { closeModal } from '../../slices/modals.js';
 
 const AddChannelForm = () => {
   const dispatch = useDispatch();
   const socket = useSocket();
   const { channels } = useSelector((state) => state.channels);
-  const channelsNames = channels.map(({ name }) => name);
-
-  const schema = yup.object().shape({
-    channelName: yup.string()
-      .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelsNames, 'Название должно быть уникальным'),
-  });
 
   const handleClose = () => dispatch(closeModal());
 
   return (
     <Formik
-      validationSchema={schema}
+      validationSchema={validation.channelsSchema(channels)}
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={(values) => {

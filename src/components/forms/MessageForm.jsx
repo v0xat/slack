@@ -1,19 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import {
   Form, Col, Row, Button,
 } from 'react-bootstrap';
 
 import { useSocket, useUser } from '../../hooks/index.jsx';
-
-const schema = yup.object().shape({
-  message: yup.string()
-    .trim()
-    .required()
-    .max(256, 'Слишком длинное сообщение...'),
-});
+import validation from '../../validationSchemas';
 
 const MessageForm = () => {
   const { userData } = useUser();
@@ -23,7 +16,7 @@ const MessageForm = () => {
   return (
     <div className="mt-auto px-5 py-3">
       <Formik
-        validationSchema={schema}
+        validationSchema={validation.messagesSchema}
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={(values, actions) => {

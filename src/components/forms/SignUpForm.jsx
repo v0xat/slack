@@ -1,24 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import * as yup from 'yup';
 import axios from 'axios';
 
 import { useUser } from '../../hooks/index.jsx';
+import validation from '../../validationSchemas';
 import routes from '../../routes.js';
-
-const signUpSchema = yup.object().shape({
-  username: yup.string()
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
-    .required('Обязательное поле'),
-  password: yup.string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: yup.string()
-    .required('Обязательное поле')
-    .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
-});
 
 const SignUpForm = ({ history, location }) => {
   const usernameRef = useRef();
@@ -35,7 +22,7 @@ const SignUpForm = ({ history, location }) => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: signUpSchema,
+    validationSchema: validation.signUpSchema,
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: async (values, actions) => {
