@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import { useUser } from '../../hooks/index.jsx';
-import validation from '../../validationSchemas';
-import routes from '../../routes.js';
+import validation from '../../utils/validationSchemas';
+import routes from '../../utils/routes.js';
 
 const LoginForm = ({ history, location }) => {
   const { t } = useTranslation();

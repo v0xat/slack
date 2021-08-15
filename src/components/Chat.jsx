@@ -7,7 +7,7 @@ import {
 
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
-import routes from '../routes.js';
+import routes from '../utils/routes.js';
 import { initState } from '../slices/channels.js';
 
 const getAuthHeader = () => {

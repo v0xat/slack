@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { useSocket, useUser } from '../../hooks/index.jsx';
-import validation from '../../validationSchemas';
+import validation from '../../utils/validationSchemas';
 
 const MessageForm = () => {
   const { t } = useTranslation();

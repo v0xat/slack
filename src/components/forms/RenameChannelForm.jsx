@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { useSocket } from '../../hooks/index.jsx';
-import validation from '../../validationSchemas';
+import validation from '../../utils/validationSchemas';
 import { closeModal } from '../../slices/modals.js';
 
 const RenameChannelForm = ({ channelId }) => {

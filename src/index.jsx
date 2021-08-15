@@ -1,10 +1,12 @@
 /* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import './i18n';
+import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import './utils/i18n';
 
 import '../assets/application.scss';
+import rollbarConfig from './utils/rollbarConfig.js';
 import store from './app/store';
 import App from './components/App.jsx';
 import { socket, SocketContext } from './context/socket.jsx';
@@ -80,12 +82,16 @@ const UserProvider = ({ children }) => {
 };
 
 ReactDOM.render(
-  <Provider store={store}>
-    <SocketProvider>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </SocketProvider>
-  </Provider>,
+  <RollbarProvider config={rollbarConfig}>
+    <ErrorBoundary>
+      <ReduxProvider store={store}>
+        <SocketProvider>
+          <UserProvider>
+            <App />
+          </UserProvider>
+        </SocketProvider>
+      </ReduxProvider>
+    </ErrorBoundary>
+  </RollbarProvider>,
   document.querySelector('#chat'),
 );
