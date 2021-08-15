@@ -31,6 +31,6 @@ export default {
       .required(translation('yup.fieldRequired'))
       .min(3, translation('yup.channelLength'))
       .max(20, translation('yup.channelLength'))
-      .notOneOf(channels.map(({ name }) => name), translation('yup.uniqueChannelName')),
+      .notOneOf(channels.map(({ name }) => name), translation('yup.uniqueName')),
   }),
 };
